@@ -18,10 +18,13 @@ function getComputerChoice() {
 // Create function getHumanChoice
 
 function getHumanChoice() {
-  let humanMove = 0;
-
   let userInput = prompt("What is your move?");
-  humanMove =
+  if (userInput === null) {
+    console.log("Game cancelled.");
+    return null;
+  }
+
+  let humanMove =
     userInput.charAt(0).toUpperCase() + userInput.slice(1).toLowerCase();
 
   if (
@@ -30,7 +33,7 @@ function getHumanChoice() {
     humanMove !== "Scissors"
   ) {
     alert(humanMove + " is not a valid move.");
-    return;
+    return null;
   } else {
     console.log("You played " + humanMove);
     return humanMove;
@@ -41,39 +44,40 @@ function getHumanChoice() {
 let humanScore = 0;
 let computerScore = 0;
 
-function playRound(humanMove, computerMove) {
-  humanMove = getHumanChoice();
-  computerMove = getComputerChoice();
+function playRound() {
+  let humanMove = getHumanChoice();
+
+  if (humanMove === null) {
+    return;
+  }
+
+  let computerMove = getComputerChoice();
 
   if (
     (computerMove === "Rock" && humanMove === "Scissors") ||
     (computerMove === "Paper" && humanMove === "Rock") ||
     (computerMove === "Scissors" && humanMove === "Paper")
   ) {
-    computerScore = computerScore + 1;
+    computerScore++;
     console.log("You lose! " + computerMove + " beats " + humanMove);
-    console.log("Human score is " + humanScore);
-    console.log("Computer score is " + computerScore);
   } else if (
     (computerMove === "Rock" && humanMove === "Paper") ||
     (computerMove === "Paper" && humanMove === "Scrissors") ||
     (computerMove === "Scissors" && humanMove === "Rock")
   ) {
-    humanScore = humanScore + 1;
+    humanScore++;
     console.log("You won! " + humanMove + " beats " + computerMove);
-    console.log("Human score is " + humanScore);
-    console.log("Computer score is " + computerScore);
   } else {
     console.log("Tie! You both played " + humanMove);
-    console.log("Human score is " + humanScore);
-    console.log("Computer score is " + computerScore);
   }
+  console.log("Human score: " + humanScore);
+  console.log("Computer score: " + computerScore);
 }
 
 // Create playGame function for 5 rounds and output final result
 
 function playGame() {
-  for (round = 1; round <= 5; round++) {
+  for (let round = 1; round <= 5; round++) {
     console.log("ROUND " + round + "/5:");
     playRound();
   }
@@ -84,10 +88,12 @@ function playGame() {
     );
   } else if (humanScore < computerScore) {
     console.log(
-      "You LOSE the game by " + humanScore + "/" + computerScore + "."
+      "You LOST the game by " + humanScore + "/" + computerScore + "."
     );
   } else {
-    console.log("You are tied by " + humanScore + "/" + computerScore + ".");
+    console.log(
+      "It's a TIE game with scores " + humanScore + "/" + computerScore + "."
+    );
   }
 }
 
